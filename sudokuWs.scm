@@ -10,6 +10,8 @@
 
 (define (solve)
   (let/ec return
+  (call-with-output-file2 "send" write-line 
+                      (string-append  "{\"num\": \"" (apply string-append (map number->string (vector->list grid))) "\"}"))
     (for2 0 8 (lambda(row)
       (for2 0 8 (lambda(col)
         (if (=(vector-ref grid (row_col->cell row col)) 0)
