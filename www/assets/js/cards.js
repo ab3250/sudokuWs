@@ -6,7 +6,16 @@ document.addEventListener('DOMContentLoaded', loadWindow, false)
  ws.onmessage = function(evt) {   
   const d = JSON.parse(evt.data).num.toString()
   for (var i = 0; i < d.length; i++) {
-    console.log(d[i])
+    const e = document.getElementById("cell-" + i.toString())
+    console.log("cell-" + i.toString())
+    if(d[i] === '0'){
+      e.value = ' '
+      e.disabled = false
+    }
+    else{
+      e.value=d[i]
+      e.disabled = true
+    } 
   }
   //console.log(typeof(d))
   //d.forEach(element => {

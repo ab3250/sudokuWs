@@ -4,9 +4,8 @@
   (chibi time)  
   (scheme base)
   (scheme red)  
-    (chibi io) 
+  (chibi io) 
   (delay)
- ; (srfi 179)
   (scheme vector))
 
 (define (solve)
@@ -20,13 +19,14 @@
                 (if (possible? row col num grid)
                   (begin
                     (vector-set! grid (row_col->cell row col) num)
-                    (solve)              
-                   
-                    (when (no-zeros-left? grid)(begin
-                                                (call-with-output-file2 "send" write-line 
-                                                   (string-append  "{\"num\": \"" (apply string-append (map number->string (vector->list grid))) "\"}"))
-                                                (print-grid grid)
-                                                (exit)))
+                    (solve)      
+                    (delay 150000)        
+                    (call-with-output-file2 "send" write-line 
+                      (string-append  "{\"num\": \"" (apply string-append (map number->string (vector->list grid))) "\"}"))
+                    (when (no-zeros-left? grid)
+                      (begin                                                
+                        (print-grid grid)
+                        (exit)))
                     (vector-set! grid (row_col->cell row col) 0)))
                 (num-loop (+ 1 num)))
               (return))))))))))
