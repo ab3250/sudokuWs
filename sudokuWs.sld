@@ -19,7 +19,7 @@
   (begin
  
 
-;#|
+#|
    (define grid (list->vector
      (append
        '(5 3 0 0 7 0 0 0 0)
@@ -31,8 +31,8 @@
        '(0 6 0 0 0 0 2 8 0)
        '(0 0 0 4 1 9 0 0 5)
        '(0 0 0 0 8 0 0 7 9))))
-;|#
-#| 
+|#
+;#| 
   (define grid (list->vector
     (append
       '(0 0 0 0 0 0 0 0 0)
@@ -44,7 +44,7 @@
       '(0 0 0 0 0 0 0 0 0)
       '(0 0 0 0 0 0 0 0 0)
       '(0 0 0 0 0 0 0 0 0)))) 
-|#
+;|#
 (define-syntax nested-loop
   (syntax-rules ()
     ((_ l1 l1-start l1-end l2 l2-start l2-end body ...)
