@@ -20,14 +20,17 @@
                 (if (possible? row col num grid)
                   (begin
                     (vector-set! grid (row_col->cell row col) num)
-                    (solve)
-                    (call-with-output-file2 "send" write-line "{\"firstName\":\"John\", \"lastName\":\"Doe\"}\n")
-                    (delay 50)
-                    (when (no-zeros-left? grid)(begin (print-grid grid) (exit)))
+                    (solve)              
+                   
+                    (when (no-zeros-left? grid)(begin
+                                                (call-with-output-file2 "send" write-line 
+                                                   (string-append  "{\"num\": \"" (apply string-append (map number->string (vector->list grid))) "\"}"))
+                                                (print-grid grid)
+                                                (exit)))
                     (vector-set! grid (row_col->cell row col) 0)))
                 (num-loop (+ 1 num)))
-              (return)))))))))) 
+              (return))))))))))
 
 (define (main args)
   (solve)
-  )
+)

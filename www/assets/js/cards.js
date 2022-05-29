@@ -4,7 +4,14 @@ document.addEventListener('DOMContentLoaded', loadWindow, false)
  console.log("initialized websocket")
 
  ws.onmessage = function(evt) {   
-  const d = JSON.parse(evt.data) 
+  const d = JSON.parse(evt.data).num.toString()
+  for (var i = 0; i < d.length; i++) {
+    console.log(d[i])
+  }
+  //console.log(typeof(d))
+  //d.forEach(element => {
+  //  console.log(element)
+  //}) 
  // switch (d.type){
   //  case 'greeting': console.log(d.data) 
   //                  break
@@ -13,7 +20,10 @@ document.addEventListener('DOMContentLoaded', loadWindow, false)
   //  case 'hide': displayBack(d.data)
   //                break
   //  default: 
-  console.log(d)
+  //console.log(d.num)
+  
+   
+
  // }
  }
 
