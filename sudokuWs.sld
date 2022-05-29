@@ -6,24 +6,14 @@
     no-zeros-left?
     print-grid
     for2
-    let/ec )
+    let/ec 
+    call-with-input-file2 
+    call-with-output-file2  )
  (import
   (chibi time)
-  (chibi loop)  
   (scheme base)
   (scheme red)  
-  (chibi io)
-  ;(schemepunk json)  
-  (srfi 1)
-  (srfi 179)
-  (delay)
-  ;(srfi 179)
-  (scheme list) 
-  (only (srfi 130) string-pad)
-  (srfi 27)  
-  (srfi 179)
-  (scheme vector)
-  )
+  (scheme vector))
 
   ;library for sudokuWs
   (begin
@@ -55,6 +45,13 @@
       '(0 0 0 0 0 0 0 0 0)
       '(0 0 0 0 0 0 0 0 0)))) 
 |#
+(define-syntax nested-loop
+  (syntax-rules ()
+    ((_ l1 l1-start l1-end l2 l2-start l2-end body ...)
+         (for l1-start l1-end (lambda(l1)
+		    (for l2-start l2-end (lambda(l2)
+			       (begin
+				body ... ))))))))
 
 (define-syntax let/ec 
   (syntax-rules ()
@@ -70,14 +67,14 @@
             (func index)
             (loop (+ index 1)))))))
 
-(define call-with-input-file 
+(define call-with-input-file2 
     (lambda (filename proc)
   	  (let ((p (open-input-file filename)))
        (let ((str (proc p)))  
         (close-input-port p)
         str))))
 
-(define call-with-output-file
+(define call-with-output-file2
     (lambda(filename proc str)
       (let ((p (open-output-file filename)))
         (proc str p)    
@@ -99,7 +96,6 @@
         (if (not (= count length))
           (loop (+ count 1))
           #t)))))
-
 
 (define (get_row_cells row)
       (let loop ((start (* row 9)))
@@ -161,31 +157,5 @@
   
 
 
-; (define-syntax nested-loop
-;   (syntax-rules ()
-;     ((_ l1 l1-start l1-end l2 l2-start l2-end body ...)
-;          (for l1-start l1-end (lambda(l1)
-; 		    (for l2-start l2-end (lambda(l2)
-; 			       (begin
-; 				body ... ))))))))
-
-#| (define (solve)
-    (let row_loop ((row 0))
-	       (let col_loop ((col 0))              
-                     (if (= (vector-ref grid (row_col->cell row col))0)                     
-                      (let num-loop ((num 0))                  
-                      (if (not (eqv? 10 num))
-                        (begin
-                          (if (possible? row col num)
-                            (begin                                                                       
-                              (vector-set! grid (row_col->cell row col) num )
-                              (solve)
-                              (when (no-zeros-left? grid)(print-grid))
-                              (vector-set! grid (row_col->cell row col)0)
-                              (num-loop (+ 1 num))))
-                               ))))
-                             
-                      (if (not (= 8 col))(col_loop (+ col 1))))
-                    (if (not (= 8 row))(row_loop (+ row 1))))) |#
 
 

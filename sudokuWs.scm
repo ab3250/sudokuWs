@@ -3,9 +3,10 @@
   (sudokuWs)
   (chibi time)  
   (scheme base)
-  (scheme red)   
+  (scheme red)  
+    (chibi io) 
   (delay)
-  (srfi 179)
+ ; (srfi 179)
   (scheme vector))
 
 (define (solve)
@@ -20,10 +21,13 @@
                   (begin
                     (vector-set! grid (row_col->cell row col) num)
                     (solve)
+                    (call-with-output-file2 "send" write-line "{\"firstName\":\"John\", \"lastName\":\"Doe\"}\n")
+                    (delay 50)
                     (when (no-zeros-left? grid)(begin (print-grid grid) (exit)))
                     (vector-set! grid (row_col->cell row col) 0)))
                 (num-loop (+ 1 num)))
               (return)))))))))) 
 
 (define (main args)
-  (solve))
+  (solve)
+  )

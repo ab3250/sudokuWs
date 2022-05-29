@@ -5,15 +5,16 @@ document.addEventListener('DOMContentLoaded', loadWindow, false)
 
  ws.onmessage = function(evt) {   
   const d = JSON.parse(evt.data) 
-  switch (d.type){
-    case 'greeting': console.log(d.data) 
-                    break
-    case 'cards': displayDeck(d.data)
-                  break
-    case 'hide': displayBack(d.data)
-                  break
-    default: 
-  }
+ // switch (d.type){
+  //  case 'greeting': console.log(d.data) 
+  //                  break
+  //  case 'cards': displayDeck(d.data)
+  //                break
+  //  case 'hide': displayBack(d.data)
+  //                break
+  //  default: 
+  console.log(d)
+ // }
  }
 
  ws.onopen = function() {
