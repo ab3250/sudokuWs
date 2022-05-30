@@ -1,7 +1,6 @@
 (define-library (sudokuWs)
-  (export       
-    grid1
-    grid2
+  (export     
+    grid
     possible?
     row_col->cell
     no-zeros-left?
@@ -20,8 +19,8 @@
   (begin
  
 
-;#|
-   (define grid2 (list->vector
+#|
+   (define grid (list->vector
      (append
        '(5 3 0 0 7 0 0 0 0)
        '(6 0 0 1 9 5 0 0 0)
@@ -32,9 +31,9 @@
        '(0 6 0 0 0 0 2 8 0)
        '(0 0 0 4 1 9 0 0 5)
        '(0 0 0 0 8 0 0 7 9))))
-;|#
+|#
 ;#| 
-  (define grid1 (list->vector
+  (define grid (list->vector
     (append
       '(0 0 0 0 0 0 0 0 0)
       '(0 0 0 0 0 0 0 0 0)
@@ -44,7 +43,7 @@
       '(0 0 0 0 0 0 0 0 0)
       '(0 0 0 0 0 0 0 0 0)
       '(0 0 0 0 0 0 0 0 0)
-      '(0 0 0 0 0 0 0 0 0))))
+      '(0 0 0 0 0 0 0 0 0)))) 
 ;|#
 (define-syntax nested-loop
   (syntax-rules ()
