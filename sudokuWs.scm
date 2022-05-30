@@ -10,7 +10,7 @@
 
 (define (solve grid)
 (let ((grid-copy (vector-copy grid)))
- (let loop ()
+ (let loop2 ()
   (let/ec return
     (for2 0 8 (lambda(row)
       (for2 0 8 (lambda(col)
@@ -21,15 +21,15 @@
                 (if (possible? row col num grid-copy)
                   (begin
                     (vector-set! grid-copy (row_col->cell row col) num)
-                                        (delay-seconds 1)        
+                   ; (delay-seconds 1)        
                     (call-with-output-file2 "send" write-line 
                       (string-append  "{\"num\": \"" (apply string-append (map number->string (vector->list grid-copy))) "\"}"))
-                    (loop)      
+                    (loop2)      
 
                     (when (no-zeros-left? grid-copy)
                       (begin                                                
                         (print-grid grid-copy)
-                        (return)
+                        (exit)
                         ))
                     (vector-set! grid-copy (row_col->cell row col) 0)))
                 (num-loop (+ 1 num)))
