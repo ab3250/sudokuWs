@@ -8,8 +8,8 @@
     print-grid
     for2
     let/ec 
-    call-with-input-file2 
-    call-with-output-file2  )
+    fifoOut
+    fifoIn )
  (import
   (chibi time)
   (scheme base)
@@ -18,7 +18,8 @@
 
   ;library for sudokuWs
   (begin
- 
+  (define fifoIn "/tmp/fifoIn")
+  (define fifoOut "/tmp/fifoOut")
 
 ;#|
    (define grid2 (list->vector
@@ -68,18 +69,18 @@
             (func index)
             (loop (+ index 1)))))))
 
-(define call-with-input-file2 
-    (lambda (filename proc)
-  	  (let ((p (open-input-file filename)))
-       (let ((str (proc p)))  
-        (close-input-port p)
-        str))))
+; (define call-with-input-file2 
+;     (lambda (filename proc)
+;   	  (let ((p (open-input-file filename)))
+;        (let ((str (proc p)))  
+;         (close-input-port p)
+;         str))))
 
-(define call-with-output-file2
-    (lambda(filename proc str)
-      (let ((p (open-output-file filename)))
-        (proc str p)    
-        (close-output-port p))))
+; (define call-with-output-file2
+;     (lambda(filename proc str)
+;       (let ((p (open-output-file filename)))
+;         (proc str p)    
+;         (close-output-port p))))
 
 
 (define (check cell_list num grid) ;free to place number t/f  

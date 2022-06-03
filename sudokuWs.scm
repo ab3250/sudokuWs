@@ -6,7 +6,9 @@
   (scheme red)  
   (chibi io) 
   (delay)
-  (scheme vector))
+  (scheme vector)
+  (fifoRWP)
+)
 
 (define (solve grid)
 (let ((grid-copy (vector-copy grid)))
@@ -22,32 +24,28 @@
                   (begin
                     (vector-set! grid-copy (row_col->cell row col) num)
                    ; (delay-seconds 1)        
-                    (call-with-output-file2 "send" write-line 
+                    (scheme_write_ws fifoOut 
                       (string-append  "{\"num\": \"" (apply string-append (map number->string (vector->list grid-copy))) "\"}"))
                     (loop2)      
 
                     (when (no-zeros-left? grid-copy)
                       (begin                                                
-                        (print-grid grid-copy)
-                        (exit)
-                        ))
+                        ;(print-grid grid-copy)
+                        (return))) ;unwinds recursion ? yuck
                     (vector-set! grid-copy (row_col->cell row col) 0)))
                 (num-loop (+ 1 num)))
               (return))))))))))))
 
 (define (main args)
   (let loop ()
-     (let ((msg (call-with-input-file "recv" read-line)))    
-      (flush-output-port (current-output-port))
-      (display msg) 
-      ;(display grid2)  
-      ;      
+     (let ((msg (scheme_read_ws fifoIn)))    
+     ; (flush-output-port (current-output-port))
+      (display (list 'debug msg))
       (cond 
         ((string=? msg "button1")(solve grid1))
         ((string=? msg "button2")(solve grid2))
-        ((string=? msg "button3")(call-with-output-file2 "send" write-line 
+        ((string=? msg "button3")(scheme_write_ws fifoOut 
                      (string-append  "{\"num\": \"" (apply string-append (map number->string (vector->list grid1))) "\"}")))
-        ((string=? msg "button4")(call-with-output-file2 "send" write-line 
-                     (string-append  "{\"num\": \"" (apply string-append (map number->string (vector->list grid2))) "\"}")))
-       ) 
+        ((string=? msg "button4")(scheme_write_ws fifoOut
+                     (string-append  "{\"num\": \"" (apply string-append (map number->string (vector->list grid2))) "\"}")))) 
     (loop))))

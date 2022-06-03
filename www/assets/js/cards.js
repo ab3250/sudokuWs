@@ -88,7 +88,7 @@ return array;
 }
 
 function mode (btnID) {
-   ws.send(btnID + "\r\n") //+ "\r\n"
+   ws.send(btnID) //+ "\r\n"
   
    //alert(btnID)
 }
