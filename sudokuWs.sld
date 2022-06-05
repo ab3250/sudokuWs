@@ -9,18 +9,25 @@
     for2
     let/ec 
     fifoOut
-    fifoIn )
+    fifoIn 
+    lock-buttons
+    unlock-buttons
+    lock
+    ;scheme_write_ws
+    ;scheme_write_ws
+    )
  (import
   (chibi time)
   (scheme base)
   (scheme red)  
-  (scheme vector))
+  (scheme vector)
+  (fifoRWP))
 
   ;library for sudokuWs
   (begin
   (define fifoIn "/tmp/fifoIn")
   (define fifoOut "/tmp/fifoOut")
-
+ 
 ;#|
    (define grid2 (list->vector
      (append
@@ -47,6 +54,21 @@
       '(0 0 0 0 0 0 0 0 0)
       '(0 0 0 0 0 0 0 0 0))))
 ;|#
+
+(define (lock-buttons)
+  (scheme_write_ws fifoOut "{\"type\":\"lock\"}"))
+
+(define (unlock-buttons)
+  (scheme_write_ws fifoOut "{\"type\":\"unlock\"}"))
+
+(define-syntax lock
+  (syntax-rules ()
+    ((_ body ...)
+      (begin (lock-buttons)
+        body ...
+        (unlock-buttons)))))
+
+
 (define-syntax nested-loop
   (syntax-rules ()
     ((_ l1 l1-start l1-end l2 l2-start l2-end body ...)
