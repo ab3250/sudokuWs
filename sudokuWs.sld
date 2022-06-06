@@ -6,13 +6,15 @@
     row_col->cell
     no-zeros-left?
     print-grid
-    for2
+    for
     let/ec 
     fifoOut
     fifoIn 
     lock-buttons
     unlock-buttons
     lock
+    grid-string
+    nested-loop
     ;scheme_write_ws
     ;scheme_write_ws
     )
@@ -55,6 +57,9 @@
       '(0 0 0 0 0 0 0 0 0))))
 ;|#
 
+(define (grid-string grid)
+  (string-append  "{\"type\":\"grid\",\"num\":\"" (apply string-append (map number->string (vector->list grid))) "\"}"))
+
 (define (lock-buttons)
   (scheme_write_ws fifoOut "{\"type\":\"lock\"}"))
 
@@ -68,6 +73,13 @@
         body ...
         (unlock-buttons)))))
 
+  (define for (lambda (start end func)
+      (let loop ((index start))
+        (if (> index end) #t
+          (begin
+            (func index)
+            (loop (+ index 1)))))))
+
 (define-syntax nested-loop
   (syntax-rules ()
     ((_ l1 l1-start l1-end l2 l2-start l2-end body ...)
@@ -75,7 +87,6 @@
 		    (for l2-start l2-end (lambda(l2)
 			       (begin
 				body ... ))))))))
-
 (define-syntax let/ec 
   (syntax-rules ()
     ((_ return body ...)
@@ -83,12 +94,7 @@
       (lambda (return)
         body ...)))))
 
-  (define for2 (lambda (start end func)
-      (let loop ((index start))
-        (if (> index end) #t
-          (begin
-            (func index)
-            (loop (+ index 1)))))))
+
 
 ; (define call-with-input-file2 
 ;     (lambda (filename proc)
@@ -160,8 +166,8 @@
 
 (define (print-grid grid)
     (newline)
-    (for2 0 8 (lambda(row)
-      (for2 0 8 (lambda(col)
+    (for 0 8 (lambda(row)
+      (for 0 8 (lambda(col)
         (display (vector-ref grid (row_col->cell row col)))))
         (newline))))
 
