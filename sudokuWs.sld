@@ -15,6 +15,7 @@
     lock
     grid-string
     nested-loop
+    nested-loop-with-break
     ;scheme_write_ws
     ;scheme_write_ws
     )
@@ -57,6 +58,22 @@
       '(0 0 0 0 0 0 0 0 0))))
 ;|#
 
+(define-syntax nested-loop-with-break
+  (syntax-rules ()
+    ((_ l1 l1-start l1-end l2 l2-start l2-end pred body ...)
+         (for-with-break l1-start l1-end (lambda(l1)
+		    (for-with-break l2-start l2-end (lambda(l2)
+			       (begin
+				body ... ))))))))
+
+(define for-with-break (lambda (start end func pred)
+      (let loop ((index start))
+        (if (or (> index end) (pred)) #t
+          (begin
+            (func index)
+            (loop (+ index 1)))))))
+
+
 (define (grid-string grid)
   (string-append  "{\"type\":\"grid\",\"num\":\"" (apply string-append (map number->string (vector->list grid))) "\"}"))
 
@@ -87,6 +104,7 @@
 		    (for l2-start l2-end (lambda(l2)
 			       (begin
 				body ... ))))))))
+
 (define-syntax let/ec 
   (syntax-rules ()
     ((_ return body ...)
@@ -94,6 +112,20 @@
       (lambda (return)
         body ...)))))
 
+(define-syntax nested-loop-with-break
+  (syntax-rules ()
+    ((_ l1 l1-start l1-end pred1 l2 l2-start l2-end pred2 body ...)
+         (for-with-break l1-start l1-end pred1 (lambda(l1)
+		    (for-with-break l2-start l2-end pred2 (lambda(l2)
+			       (begin
+				body ... ))))))))
+
+(define for-with-break (lambda (start end pred func) 
+      (let loop ((index start))
+        (if (or (> index end) pred) #t
+          (begin
+            (func index)
+            (loop (+ index 1)))))))
 
 
 ; (define call-with-input-file2 
