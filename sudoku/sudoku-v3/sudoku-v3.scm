@@ -4,7 +4,6 @@
 (include "../library/sudoku-library.scm")
 
 (define (solve)
-  (let loop ()
     (for 0 8 (lambda(row)
 	       (for 0 8 (lambda(col)
                     (if (eqv?(array-ref grid row col) 0)
@@ -20,6 +19,6 @@
 					  (print-grid)
 					  (exit)))
                                       (array-set! grid 0 row col)))
-                                (num-loop (+ 1 num)))(loop))))))))))
+                                (num-loop (+ 1 num)))))))))))
 (print-grid)
 (solve)

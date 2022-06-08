@@ -66,9 +66,9 @@
 			       (begin
 				body ... ))))))))
 
-(define for-with-break (lambda (start end func pred)
+(define for-with-break (lambda (start end func pred var)
       (let loop ((index start))
-        (if (or (> index end) (pred)) #t
+        (if (or (> index end) (pred var)) #t
           (begin
             (func index)
             (loop (+ index 1)))))))
